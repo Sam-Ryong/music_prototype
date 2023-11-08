@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>POST 요청으로 피아노 음 듣기</title>
+</head>
+
+<body>
+    <h1>POST 요청으로 피아노 음 듣기</h1>
+    <button id="playButton">피아노 음 재생</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let oscillator = null;
+        // oscillator.frequency.setValueAtTime(261.63, audioContext.currentTime); // C4 음 (261.63 Hz)
+        // oscillator.frequency.setValueAtTime(293.66, audioContext.currentTime); // C4 음 (261.63 Hz)
+        // oscillator.frequency.setValueAtTime(329.63, audioContext.currentTime); // C4 음 (261.63 Hz)
+
+        const socket = io();
+
+        socket.on("note", (note) => {
+            if (note == "C") {
+                playPianoSound(261.63)
+            }
+            else if (note == "D") {
+                playPianoSound(293.66)
+            }
+            else if (note == "E") {
+                playPianoSound(329.63)
+            }
+        })
+
+        function playPianoSound(hz) {
+            // 중지된 소리가 있는 경우 중지
+            if (oscillator) {
+                oscillator.stop();
+                oscillator.disconnect(audioContext.destination);
+            }
+
+            // 오실레이터 생성 및 설정
+            oscillator = audioContext.createOscillator();
+            oscillator.type = 'sine'; // 사인파 형태
+            oscillator.frequency.setValueAtTime(hz, audioContext.currentTime); // C4 음 (261.63 Hz)
+
+            oscillator.connect(audioContext.destination); // 출력 연결
+
+            // 소리 재생 및 1초 후 중지
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 1); // 1초 후 중지
+        }
+    </script>
+</body>
+
+</html>
