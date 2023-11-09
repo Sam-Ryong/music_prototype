@@ -16,7 +16,15 @@
         // oscillator.frequency.setValueAtTime(261.63, audioContext.currentTime); // C4 음 (261.63 Hz)
         // oscillator.frequency.setValueAtTime(293.66, audioContext.currentTime); // C4 음 (261.63 Hz)
         // oscillator.frequency.setValueAtTime(329.63, audioContext.currentTime); // C4 음 (261.63 Hz)
-
+        // 도(C4): 261.63 Hz
+        // 레(D4): 293.66 Hz
+        // 미(E4): 329.63 Hz
+        // 파(F4): 349.23 Hz
+        // 솔(G4): 392.00 Hz
+        // 라(A4): 440.00 Hz
+        // 시(B4): 493.88 Hz
+        // 높은 도(C5): 523.25 Hz
+        audioContext.resume();
         const socket = io();
 
         socket.on("note", (note) => {
@@ -29,6 +37,22 @@
             else if (note == "E") {
                 playPianoSound(329.63)
             }
+            else if (note == "F") {
+                playPianoSound(349.23)
+            }
+            else if (note == "G") {
+                playPianoSound(392.00)
+            }
+            else if (note == "A") {
+                playPianoSound(440.00)
+            }
+            else if (note == "B") {
+                playPianoSound(493.88)
+            }
+            else if (note == "C+") {
+                playPianoSound(523.25)
+            }
+
         })
 
         function playPianoSound(hz) {
